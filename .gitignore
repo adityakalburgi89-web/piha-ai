@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.env
+.env.local
+*.log
+npm-debug.log*
+.DS_Store
+PLAN.md
+thinking.md
+scratch/
+.next/
+tsconfig.tsbuildinfo
+*.tsbuildinfo
+scripts/make_210_commits.py
