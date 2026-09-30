@@ -1,9 +1,20 @@
+
+
+
+
+
 /**
  * ElevateVoice — Supabase Client Authentication Helper
  */
 (function () {
-  const SUPABASE_URL = 'https://your-supabase-project.supabase.co';
-  const SUPABASE_ANON_KEY = 'your_supabase_anon_key_here';
+  const SUPABASE_URL =
+    (typeof window !== 'undefined' && window.__ENV && window.__ENV.NEXT_PUBLIC_SUPABASE_URL) ||
+    (typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_SUPABASE_URL) ||
+    '';
+  const SUPABASE_ANON_KEY =
+    (typeof window !== 'undefined' && window.__ENV && window.__ENV.NEXT_PUBLIC_SUPABASE_ANON_KEY) ||
+    (typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) ||
+    '';
 
   let client = null;
 
