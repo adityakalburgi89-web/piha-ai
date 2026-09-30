@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Piha AI — Natural Voice Conversations for Modern Businesses</title>
+  <meta name="description"
+    content="Natural voice conversations that answer customer questions, share details over WhatsApp, and schedule calls in English, Hindi, Kannada, and Telugu.">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%23ffe95c%22/><text y=%2268%22 x=%2220%22 font-family=%22sans-serif%22 font-weight=%22800%22 font-size=%2254%22 fill=%22%231a3300%22>lo</text></svg>">
+</head>
+
+<body>
+
+  <!-- Floating Navigation Bar -->
+  <div class="nav-container">
+    <nav class="floating-nav" aria-label="Main Navigation">
+      <a href="#" class="brand-lockup">
+        <div class="logo-monogram" aria-hidden="true">lo</div>
+        <div class="brand-text">
+          <span class="brand-name">Piha AI</span>
+          <span class="brand-subtitle">Voice Platform</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#voices" class="nav-link">Voice Samples</a></li>
+        <li><a href="#features" class="nav-link">Features</a></li>
+        <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+        <li><a href="#faq" class="nav-link">FAQ</a></li>
+      </ul>
+
+      <div class="nav-actions" id="nav-auth-container">
+        <button class="btn btn-outline" id="nav-quick-dial-btn" type="button">Make a Call</button>
+        <a href="#voices" class="btn btn-primary-compact" id="nav-listen-voices-btn">Listen to Voices →</a>
+      </div>
+    </nav>
+  </div>
+
+  <main class="page-wrapper">
+    <!-- Hero Section -->
+    <header class="section hero-section">
+      <div class="tagline-badge">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"
+          style="display:inline-block; vertical-align:middle; margin-right:4px;">
+          <polygon
+            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+          </polygon>
+        </svg>
+        SMART VOICE SALES ASSISTANT
+      </div>
+
+      <h1 class="display-title">
+        Convert every sales lead, spoken <span class="highlight">briefly</span> & closed instantly.
+      </h1>
+
+      <p class="hero-subhead">
+        Natural voice conversations for modern online brands. Speaks English, Hindi, Kannada, and Telugu fluently, sends
+        helpful WhatsApp details during the call, and spots your highest-value customers automatically.
+      </p>
+
+      <div class="hero-cta-group">
+        <a href="#voices" class="btn btn-primary">
+          <span>→</span> Listen to Voice Samples
+        </a>
+        <button class="btn btn-pastel-mint" id="hero-open-dialer-btn" type="button">
+          Call My Phone Now
+        </button>
+      </div>
+
+      <!-- Interactive Voice AI Orb Circle (orb-ui) Showcase -->
+      <div class="hero-orb-card">
+        <div class="hero-orb-header">
+          <span class="hero-orb-live-badge"><span class="pulse-dot"></span> REALTIME VOICE AGENT</span>
+          <span class="hero-orb-state-pill" id="hero-orb-state-display">IDLE — CLICK ORB TO INTERACT</span>
+        </div>
+        <div class="hero-orb-mount-wrapper">
+          <div id="orb-circle-mount"></div>
+        </div>
+        <div class="hero-orb-footer-hint">
+          <span>Powered by <strong>orb-ui</strong> Cloud</span> • <span>Audio-Reactive Visualizer</span>
+        </div>
+      </div>
+
+      <div class="hero-reassurance">
+        <span>Instant Playback</span>
+        <span>•</span>
+        <span>English, Hindi, Kannada & Telugu</span>
+        <span>•</span>
+        <span>Automatic WhatsApp Follow-Up</span>
+      </div>
+
+      <!-- Trust Strip -->
+      <div class="backed-by-strip">
+        <span class="backed-by-label">Designed for High Growth Brands:</span>
+        <div class="partner-pills">
+          <span class="partner-pill">E-Commerce Stores</span>
+          <span class="partner-pill">Creative Agencies</span>
+          <span class="partner-pill">D2C Fashion Brands</span>
+          <span class="partner-pill">Growth & Sales Teams</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Multilingual Voice Showcase Section (English, Hindi, Kannada, Telugu) -->
+    <section class="section" id="voices">
+      <div class="section-header">
+        <h2 class="section-title">Listen to <span class="highlight-teal">Voice Samples</span></h2>
+        <p class="section-subhead">
+          Click play to preview the natural tone, pacing, and human conversational flow in English, Hindi, Kannada, and
+          Telugu.
+        </p>
+      </div>
+
+      <div class="voice-showcase-container">
+        <!-- Card 1: English -->
+        <div class="voice-player-card" id="card-en">
+          <div>
+            <div class="voice-card-header">
+              <span class="lang-badge lang-badge-english">ENGLISH</span>
+              <span class="voice-status-tag" id="status-en">READY</span>
+            </div>
+            <h3 class="voice-card-title">English Outreach</h3>
+            <p style="font-size: 13px; opacity: 0.75; margin-bottom: 8px;">Professional, clear, and engaging e-commerce
+              introduction.</p>
+
+            <div class="voice-sample-quote">
+              "Hello! This is ElevateBox calling regarding your e-commerce store inquiry. Can you hear me clearly?"
+            </div>
+          </div>
+
+          <div>
+            <div class="player-controls-row">
+              <button class="play-pause-btn" id="btn-play-en" type="button" aria-label="Play English Voice Sample">
+                <svg viewBox="0 0 24 24" id="icon-en">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+              </button>
+
+              <div class="player-track-wrap">
+                <div class="waveform-visualizer">
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                </div>
+                <div class="track-progress-container">
+                  <div class="progress-bar-bg" id="track-en">
+                    <div class="progress-bar-fill" id="fill-en"></div>
+                  </div>
+                  <span class="track-time-counter" id="time-en">0:00 / 0:08</span>
+                </div>
+              </div>
+            </div>
+            <audio id="audio-en" preload="none" src="/audio/english.mp3"></audio>
+          </div>
+        </div>
+
+        <!-- Card 2: Hindi -->
+        <div class="voice-player-card" id="card-hi">
+          <div>
+            <div class="voice-card-header">
+              <span class="lang-badge lang-badge-hindi">HINDI</span>
+              <span class="voice-status-tag" id="status-hi">READY</span>
+            </div>
+            <h3 class="voice-card-title">Hindi Qualification</h3>
+            <p style="font-size: 13px; opacity: 0.75; margin-bottom: 8px;">Fluent conversational Hindi for Indian
+              e-commerce leads.</p>
+
+            <div class="voice-sample-quote">
+              "नमस्ते! मैं एलिवेटबॉक्स से बात कर रहा हूँ। क्या आप अपनी ऑनलाइन वेबसाइट के बारे में चर्चा करने के लिए
+              उपलब्ध हैं?"
+            </div>
+          </div>
+
+          <div>
+            <div class="player-controls-row">
+              <button class="play-pause-btn" id="btn-play-hi" type="button" aria-label="Play Hindi Voice Sample">
+                <svg viewBox="0 0 24 24" id="icon-hi">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+              </button>
+
+              <div class="player-track-wrap">
+                <div class="waveform-visualizer">
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                </div>
+                <div class="track-progress-container">
+                  <div class="progress-bar-bg" id="track-hi">
+                    <div class="progress-bar-fill" id="fill-hi"></div>
+                  </div>
+                  <span class="track-time-counter" id="time-hi">0:00 / 0:09</span>
+                </div>
+              </div>
+            </div>
+            <audio id="audio-hi" preload="none" src="/audio/hindi.mp3"></audio>
+          </div>
+        </div>
+
+        <!-- Card 3: Kannada -->
+        <div class="voice-player-card" id="card-kn">
+          <div>
+            <div class="voice-card-header">
+              <span class="lang-badge lang-badge-kannada">KANNADA</span>
+              <span class="voice-status-tag" id="status-kn">READY</span>
+            </div>
+            <h3 class="voice-card-title">Kannada Outreach</h3>
+            <p style="font-size: 13px; opacity: 0.75; margin-bottom: 8px;">Warm regional Kannada for local business
+              owners & founders.</p>
+
+            <div class="voice-sample-quote">
+              "ನಮಸ್ಕಾರ! ನಾನು ಎಲಿವೇಟ್‌ಬಾಕ್ಸ್‌ನಿಂದ ಕರೆ ಮಾಡುತ್ತಿದ್ದೇನೆ. ನಿಮ್ಮ ಇ-ಕಾಮರ್ಸ್ ವೆಬ್‌ಸೈಟ್ ಅಭಿವೃದ್ಧಿ ಬಗ್ಗೆ
+              ಮಾತನಾಡಬಹುದೇ?"
+            </div>
+          </div>
+
+          <div>
+            <div class="player-controls-row">
+              <button class="play-pause-btn" id="btn-play-kn" type="button" aria-label="Play Kannada Voice Sample">
+                <svg viewBox="0 0 24 24" id="icon-kn">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+              </button>
+
+              <div class="player-track-wrap">
+                <div class="waveform-visualizer">
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                </div>
+                <div class="track-progress-container">
+                  <div class="progress-bar-bg" id="track-kn">
+                    <div class="progress-bar-fill" id="fill-kn"></div>
+                  </div>
+                  <span class="track-time-counter" id="time-kn">0:00 / 0:10</span>
+                </div>
+              </div>
+            </div>
+            <audio id="audio-kn" preload="none" src="/audio/kannada.mp3"></audio>
+          </div>
+        </div>
+
+        <!-- Card 4: Telugu -->
+        <div class="voice-player-card" id="card-te">
+          <div>
+            <div class="voice-card-header">
+              <span class="lang-badge lang-badge-telugu">TELUGU</span>
+              <span class="voice-status-tag" id="status-te">READY</span>
+            </div>
+            <h3 class="voice-card-title">Telugu Outreach</h3>
+            <p style="font-size: 13px; opacity: 0.75; margin-bottom: 8px;">Fluent conversational Telugu for online
+              retail brands & stores.</p>
+
+            <div class="voice-sample-quote">
+              "నమస్కారం! నేను ఎలివేట్‌బాక్స్ నుండి కాల్ చేస్తున్నాను. మీ ఆన్‌లైన్ స్టోర్ డెవలప్‌మెంట్ గురించి
+              మాట్లాడవచ్చా?"
+            </div>
+          </div>
+
+          <div>
+            <div class="player-controls-row">
+              <button class="play-pause-btn" id="btn-play-te" type="button" aria-label="Play Telugu Voice Sample">
+                <svg viewBox="0 0 24 24" id="icon-te">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+              </button>
+
+              <div class="player-track-wrap">
+                <div class="waveform-visualizer">
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                  <span class="waveform-bar"></span>
+                </div>
+                <div class="track-progress-container">
+                  <div class="progress-bar-bg" id="track-te">
+                    <div class="progress-bar-fill" id="fill-te"></div>
+                  </div>
+                  <span class="track-time-counter" id="time-te">0:00 / 0:10</span>
+                </div>
+              </div>
+            </div>
+            <audio id="audio-te" preload="none" src="/audio/telugu.mp3"></audio>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sticky Note Features Section -->
+    <section class="section" id="features">
+      <div class="section-header">
+        <h2 class="section-title">Built to Feel <span class="highlight">Natural</span> & Reliable</h2>
+        <p class="section-subhead">
+          Designed like a creative studio notebook: warm, human, and focused on helping you close deals faster.
+        </p>
+      </div>
+
+      <div class="sticky-grid">
+        <!-- Card 1: Mint -->
+        <div class="sticky-card sticky-card-mint">
+          <div class="sticky-card-header">
+            <span class="sticky-card-tag font-mono">01 / CONVERSATION</span>
+            <span class="sticky-card-tag">INSTANT</span>
+          </div>
+          <h3 class="card-title">Instant, Natural Speaking</h3>
+          <p class="sticky-card-body">
+            Responds in less than a second with natural pauses and warm tone. Customers can interrupt anytime without
+            awkward delays.
+          </p>
+          <div class="sticky-card-footer">
+            <span>Smooth & Fluent</span>
+          </div>
+        </div>
+
+        <!-- Card 2: Blush -->
+        <div class="sticky-card sticky-card-blush">
+          <div class="sticky-card-header">
+            <span class="sticky-card-tag font-mono">02 / SHARING</span>
+            <span class="sticky-card-tag">WHATSAPP</span>
+          </div>
+          <h3 class="card-title">Instant WhatsApp Follow-Up</h3>
+          <p class="sticky-card-body">
+            When a customer shows strong interest, your portfolio, brochures, and pricing guides are sent directly to
+            their phone while they are still talking.
+          </p>
+          <div class="sticky-card-footer">
+            <span>Delivered in Seconds</span>
+          </div>
+        </div>
+
+        <!-- Card 3: Teal -->
+        <div class="sticky-card sticky-card-teal">
+          <div class="sticky-card-header">
+            <span class="sticky-card-tag font-mono">03 / SCHEDULER</span>
+            <span class="sticky-card-tag">CALENDAR</span>
+          </div>
+          <h3 class="card-title">Smart Appointment Booking</h3>
+          <p class="sticky-card-body">
+            Understands casual requests like "call me tomorrow afternoon" and immediately books the calendar slot with
+            an invite sent to both parties.
+          </p>
+          <div class="sticky-card-footer">
+            <span>Never Miss a Callback</span>
+          </div>
+        </div>
+
+        <!-- Card 4: Terracotta -->
+        <div class="sticky-card sticky-card-terracotta">
+          <div class="sticky-card-header">
+            <span class="sticky-card-tag font-mono" style="background: rgba(255,255,255,0.2); color: #fff;">04 /
+              ACCURACY</span>
+            <span class="sticky-card-tag" style="background: rgba(255,255,255,0.2); color: #fff;">SAFEGUARDS</span>
+          </div>
+          <h3 class="card-title">Accurate & On-Brand</h3>
+          <p class="sticky-card-body">
+            Strictly follows your company rules and pricing plans. Never promises unauthorized discounts or invents
+            false details.
+          </p>
+          <div class="sticky-card-footer">
+            <span>100% Brand Safe</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="section" id="how-it-works">
+      <div class="section-header">
+        <h2 class="section-title">How It <span class="highlight-mint">Works</span> in 5 Simple Steps</h2>
+        <p class="section-subhead">
+          From the first hello to a qualified customer saved in your records.
+        </p>
+      </div>
+
+      <div class="arch-container">
+        <div class="arch-flow-grid">
+          <div class="arch-step-card">
+            <div class="arch-step-num">STEP 01</div>
+            <div class="arch-step-title">Place the Call</div>
+            <div class="arch-step-desc">Automatically dials the customer when they submit an inquiry or request info.
+            </div>
+          </div>
+          <div class="arch-step-card">
+            <div class="arch-step-num">STEP 02</div>
+            <div class="arch-step-title">Warm Greeting</div>
+            <div class="arch-step-desc">Introduces your company politely and asks how we can help their business.</div>
+          </div>
+          <div class="arch-step-card">
+            <div class="arch-step-num">STEP 03</div>
+            <div class="arch-step-title">Listen & Understand</div>
+            <div class="arch-step-desc">Understands requirements, budget, and timeline in English or regional languages.
+            </div>
+          </div>
+          <div class="arch-step-card">
+            <div class="arch-step-num">STEP 04</div>
+            <div class="arch-step-title">Send WhatsApp Info</div>
+            <div class="arch-step-desc">Dispatches portfolios or books calendar callbacks during the call.</div>
+          </div>
+          <div class="arch-step-card">
+            <div class="arch-step-num">STEP 05</div>
+            <div class="arch-step-title">Save Lead Details</div>
+            <div class="arch-step-desc">Stores complete call summary and notes directly in your team's dashboard.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section" id="faq">
+      <div class="section-header">
+        <h2 class="section-title">Frequently Asked <span class="highlight">Questions</span></h2>
+        <p class="section-subhead">
+          Common questions about how ElevateVoice works with your sales team.
+        </p>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item active">
+          <div class="faq-question">
+            <span>How do I add or change the voice audio files?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            Simply place your audio files in the <code>public/audio/</code> folder named <code>english.mp3</code>,
+            <code>hindi.mp3</code>, and <code>kannada.mp3</code>. The player will automatically load and play them.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>Can customers interrupt the assistant at any time?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            Yes! Just like talking to a human, if a customer speaks up or asks a quick question, the assistant stops
+            speaking immediately and listens to them.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>How does the instant WhatsApp follow-up work?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            While on the call, if the customer asks for a portfolio or shows high interest, the system automatically
+            sends a personalized WhatsApp message with your project links and brochures.
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="page-wrapper">
+      <div class="footer-grid">
+        <div>
+          <div class="brand-lockup" style="margin-bottom: 12px;">
+            <div class="logo-monogram">lo</div>
+            <div class="brand-text">
+              <span class="brand-name">ElevateVoice</span>
+              <span class="brand-subtitle">SayBriefly Studio</span>
+            </div>
+          </div>
+          <p style="font-size: 13px; max-width: 360px; opacity: 0.8; line-height: 1.5;">
+            Conversational sales assistant built on creative agency cream paper aesthetics with warm Forest Ink and
+            Highlighter Yellow accents.
+          </p>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Navigation</div>
+          <ul class="footer-links">
+            <li><a href="#voices" class="footer-link">Voice Samples</a></li>
+            <li><a href="#features" class="footer-link">Features</a></li>
+            <li><a href="#how-it-works" class="footer-link">How It Works</a></li>
+            <li><a href="#faq" class="footer-link">FAQ</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Design Notes</div>
+          <ul class="footer-links">
+            <li><span class="footer-link">Forest Ink & Cream Paper</span></li>
+            <li><span class="footer-link">Highlighter Yellow Markers</span></li>
+            <li><span class="footer-link">Bricolage Grotesque Headlines</span></li>
+            <li><span class="footer-link">Sticky Note Pastel Cards</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 ElevateVoice. Say Briefly Design Reference. All rights reserved.</span>
+        <span>Built for high-growth online brands</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Outbound Dialer Modal -->
+  <div class="modal-backdrop" id="dialer-modal" role="dialog" aria-modal="true" aria-labelledby="dialer-modal-title">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="dialer-modal-close" aria-label="Close modal">✕</button>
+      <h3 class="modal-title" id="dialer-modal-title">Call My Phone</h3>
+      <p class="modal-subhead">Enter your phone number to receive a live sample sales call from ElevateVoice.</p>
+
+      <form id="outbound-dial-form">
+        <div class="form-group">
+          <label class="form-label" for="target-phone-input">Phone Number (with Country Code)</label>
+          <input type="tel" id="target-phone-input" class="form-input" placeholder="+91 98765 43210" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;" id="dial-submit-btn">
+          Call My Phone Now →
+        </button>
+      </form>
+
+      <div id="dial-result-box" style="margin-top: 16px; font-size: 13px; display: none;"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/orb-bundle.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+
+</html>
