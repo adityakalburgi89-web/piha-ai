@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ElevateVoice — Sign In & Access Outbound Sales Calling</title>
+  <meta name="description" content="Sign in to your ElevateVoice account to access intelligent outbound conversational sales calling.">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%23ffe95c%22/><text y=%2268%22 x=%2220%22 font-family=%22sans-serif%22 font-weight=%22800%22 font-size=%2254%22 fill=%22%231a3300%22>lo</text></svg>">
+  <style>
+    .auth-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background-color: var(--color-cream-paper);
+      padding: 24px;
+    }
+
+    .auth-container {
+      max-width: 440px;
+      width: 100%;
+      margin: 40px auto;
+      background: #ffffff;
+      border: 1px solid var(--color-pencil-gray);
+      border-radius: var(--radius-cards);
+      padding: 36px 32px;
+      box-shadow: var(--shadow-xl);
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .auth-header .logo-monogram {
+      margin: 0 auto 16px;
+      width: 48px;
+      height: 48px;
+      font-size: 26px;
+    }
+
+    .auth-title {
+      font-family: var(--font-bricolage-grotesque);
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--color-forest-ink);
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .auth-subtitle {
+      font-family: var(--font-inter);
+      font-size: 14px;
+      color: var(--color-forest-ink);
+      opacity: 0.75;
+      line-height: 1.5;
+    }
+
+    .auth-tabs {
+      display: flex;
+      background: var(--color-whisper-gray);
+      padding: 4px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+      gap: 4px;
+    }
+
+    .auth-tab {
+      flex: 1;
+      padding: 10px 14px;
+      border: none;
+      background: transparent;
+      font-family: var(--font-inter);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--color-forest-ink);
+      opacity: 0.65;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .auth-tab.active {
+      background: #ffffff;
+      opacity: 1;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .auth-form-group {
+      margin-bottom: 18px;
+      text-align: left;
+    }
+
+    .auth-label {
+      display: block;
+      font-family: var(--font-inter);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-forest-ink);
+      margin-bottom: 6px;
+    }
+
+    .auth-input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--color-pencil-gray);
+      border-radius: 6px;
+      font-family: var(--font-inter);
+      font-size: 15px;
+      color: var(--color-forest-ink);
+      background-color: #ffffff;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      box-sizing: border-box;
+    }
+
+    .auth-input:focus {
+      border-color: var(--color-forest-ink);
+      box-shadow: 0 0 0 3px rgba(255, 233, 92, 0.45);
+    }
+
+    .auth-submit-btn {
+      width: 100%;
+      padding: 14px;
+      background-color: var(--color-highlighter-yellow);
+      color: var(--color-forest-ink);
+      border: 1px solid var(--color-forest-ink);
+      border-radius: 6px;
+      font-family: var(--font-inter);
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+      margin-top: 10px;
+    }
+
+    .auth-submit-btn:hover {
+      background-color: #ffd933;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(26, 51, 0, 0.12);
+    }
+
+    .auth-submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .auth-alert {
+      padding: 12px 14px;
+      border-radius: 6px;
+      font-family: var(--font-inter);
+      font-size: 13px;
+      margin-bottom: 18px;
+      display: none;
+      line-height: 1.4;
+    }
+
+    .auth-alert.error {
+      display: block;
+      background: #fff0f0;
+      border: 1px solid #e5a4a4;
+      color: #b32626;
+    }
+
+    .auth-alert.success {
+      display: block;
+      background: var(--surface-sticky-note-mint);
+      border: 1px solid #9fcf82;
+      color: var(--color-forest-ink);
+    }
+
+    .auth-footer-nav {
+      margin-top: 24px;
+      text-align: center;
+      font-family: var(--font-inter);
+      font-size: 13px;
+    }
+
+    .auth-footer-nav a {
+      color: var(--color-forest-ink);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .auth-footer-nav a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body class="auth-page">
+
+  <!-- Top Simple Navigation -->
+  <header style="max-width: 1120px; width: 100%; margin: 0 auto; display: flex; justify-content: center; align-items: center;">
+    <a href="/" class="brand-lockup" style="text-decoration: none;">
+      <div class="logo-monogram" aria-hidden="true">lo</div>
+      <div class="brand-text">
+        <span class="brand-name">Piha AI</span>
+        <span class="brand-subtitle">Voice Platform</span>
+      </div>
+    </a>
+  </header>
+
+  <!-- Centered Auth Card -->
+  <main class="auth-container">
+    <div class="auth-header">
+      <div class="logo-monogram">lo</div>
+      <h1 class="auth-title" id="auth-heading">Sign In to Piha AI</h1>
+      <p class="auth-subtitle" id="auth-subheading">
+        Enter your credentials to access your dashboard.
+      </p>
+    </div>
+
+    <!-- Mode Switcher Tabs -->
+    <div class="auth-tabs" role="tablist">
+      <button class="auth-tab active" id="tab-signin" type="button" role="tab" aria-selected="true">Sign In</button>
+      <button class="auth-tab" id="tab-signup" type="button" role="tab" aria-selected="false">Create Account</button>
+    </div>
+
+    <!-- Feedback Message Box -->
+    <div class="auth-alert" id="auth-feedback" role="alert"></div>
+
+    <!-- Auth Form -->
+    <form id="auth-form" autocomplete="on">
+      <div class="auth-form-group">
+        <label class="auth-label" for="auth-email">Work or Personal Email</label>
+        <input type="email" id="auth-email" class="auth-input" placeholder="you@company.com" required autocomplete="email">
+      </div>
+
+      <div class="auth-form-group">
+        <label class="auth-label" for="auth-password">Password</label>
+        <input type="password" id="auth-password" class="auth-input" placeholder="••••••••" required minlength="6" autocomplete="current-password">
+      </div>
+
+      <button type="submit" class="auth-submit-btn" id="auth-submit-button">
+        Sign In →
+      </button>
+    </form>
+
+    <div class="auth-footer-nav">
+      <a href="/" id="return-link">← Cancel and return to Piha AI</a>
+    </div>
+  </main>
+
+  <footer style="text-align: center; font-size: 12px; color: var(--color-forest-ink); opacity: 0.6; padding-bottom: 12px;">
+    © 2026 Piha AI • Powered by Secure Authentication
+  </footer>
+
+  <!-- Supabase CDN + Auth script -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      const redirectTarget = params.get('redirect');
+
+      let mode = 'signin'; // 'signin' or 'signup'
+
+      const tabSignIn = document.getElementById('tab-signin');
+      const tabSignUp = document.getElementById('tab-signup');
+      const authHeading = document.getElementById('auth-heading');
+      const authSubheading = document.getElementById('auth-subheading');
+      const authSubmitBtn = document.getElementById('auth-submit-button');
+      const authFeedback = document.getElementById('auth-feedback');
+      const authForm = document.getElementById('auth-form');
+      const emailInput = document.getElementById('auth-email');
+      const passwordInput = document.getElementById('auth-password');
+
+      function setMode(newMode) {
+        mode = newMode;
+        authFeedback.style.display = 'none';
+        authFeedback.className = 'auth-alert';
+
+        if (mode === 'signin') {
+          tabSignIn.classList.add('active');
+          tabSignUp.classList.remove('active');
+          tabSignIn.setAttribute('aria-selected', 'true');
+          tabSignUp.setAttribute('aria-selected', 'false');
+          authHeading.textContent = 'Sign In to ElevateVoice';
+          authSubheading.textContent = 'Enter your credentials to manage outbound calls and AI voice automations.';
+          authSubmitBtn.textContent = 'Sign In →';
+        } else {
+          tabSignUp.classList.add('active');
+          tabSignIn.classList.remove('active');
+          tabSignUp.setAttribute('aria-selected', 'true');
+          tabSignIn.setAttribute('aria-selected', 'false');
+          authHeading.textContent = 'Create an ElevateVoice Account';
+          authSubheading.textContent = 'Sign up instantly to try live conversational outbound calling.';
+          authSubmitBtn.textContent = 'Create Account →';
+        }
+      }
+
+      tabSignIn.onclick = () => setMode('signin');
+      tabSignUp.onclick = () => setMode('signup');
+
+      // Check if user is already authenticated
+      window.addEventListener('DOMContentLoaded', async () => {
+        try {
+          const session = await window.ElevateAuth.getSession();
+          if (session && session.user) {
+            // Already logged in! Redirect right away
+            navigateAfterSuccess();
+          }
+        } catch (e) {
+          console.warn('Session check warning:', e);
+        }
+      });
+
+      function navigateAfterSuccess() {
+        if (redirectTarget === 'dialer') {
+          window.location.href = '/?action=dialer';
+        } else {
+          window.location.href = '/';
+        }
+      }
+
+      function showError(msg) {
+        authFeedback.textContent = msg;
+        authFeedback.className = 'auth-alert error';
+        authFeedback.style.display = 'block';
+      }
+
+      function showSuccess(msg) {
+        authFeedback.textContent = msg;
+        authFeedback.className = 'auth-alert success';
+        authFeedback.style.display = 'block';
+      }
+
+      authForm.onsubmit = async (e) => {
+        e.preventDefault();
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+
+        if (!email || !password) {
+          showError('Please enter both email and password.');
+          return;
+        }
+
+        authSubmitBtn.disabled = true;
+        authSubmitBtn.textContent = mode === 'signin' ? 'Signing in...' : 'Creating account...';
+
+        try {
+          if (mode === 'signin') {
+            await window.ElevateAuth.signIn(email, password);
+            showSuccess('Success! Signing you in...');
+            setTimeout(navigateAfterSuccess, 500);
+          } else {
+            const data = await window.ElevateAuth.signUp(email, password);
+            if (data?.session) {
+              showSuccess('Account created successfully! Redirecting...');
+              setTimeout(navigateAfterSuccess, 600);
+            } else {
+              showSuccess('Account created! If email confirmation is enabled on your Supabase project, please check your inbox.');
+              authSubmitBtn.disabled = false;
+              authSubmitBtn.textContent = 'Create Account →';
+            }
+          }
+        } catch (err) {
+          showError(err.message || 'Authentication error occurred.');
+          authSubmitBtn.disabled = false;
+          authSubmitBtn.textContent = mode === 'signin' ? 'Sign In →' : 'Create Account →';
+        }
+      };
+    })();
+  </script>
+</body>
+
+</html>
