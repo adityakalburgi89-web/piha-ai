@@ -1,0 +1,160 @@
+﻿version: "3.9"
+
+services:
+  # Microservice 1: Next.js API Gateway & Dashboard
+  service-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: piha-gateway
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/piha_db
+      - REDIS_URL=redis://redis:6379
+      - LIVEKIT_URL=ws://service-media:7880
+      - LIVEKIT_API_KEY=devkey
+      - LIVEKIT_API_SECRET=secretkey
+      - NEXT_PUBLIC_LIVEKIT_URL=ws://localhost:7880
+      - AMQP_URL=amqp://guest:guest@lavinmq:5672/
+    networks:
+      - piha-net
+    depends_on:
+      - redis
+      - postgres
+      - service-media
+      - lavinmq
+
+  # Microservice 2: LiveKit SFU Media Server (WebRTC Audio Core)
+  service-media:
+    image: livekit/livekit-server:v1.7
+    container_name: piha-livekit-sfu
+    restart: unless-stopped
+    command: --config /etc/livekit.yaml
+    volumes:
+      - ./livekit.yaml:/etc/livekit.yaml:ro
+    ports:
+      - "7880:7880"
+      - "7881:7881"
+      - "50000-50050:50000-50050/udp"
+    networks:
+      - piha-net
+
+  # Microservice 3: Python LiveKit Voice Agent Fleet (VAD + Sarvam + Gemini)
+  service-agent-fleet:
+    build:
+      context: ./agent
+      dockerfile: Dockerfile.agent
+    container_name: piha-voice-agent
+    restart: unless-stopped
+    environment:
+      - LIVEKIT_URL=ws://service-media:7880
+      - LIVEKIT_API_KEY=devkey
+      - LIVEKIT_API_SECRET=secretkey
+      - SARVAM_API_KEY=${SARVAM_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - AMQP_URL=amqp://guest:guest@lavinmq:5672/
+    networks:
+      - piha-net
+    depends_on:
+      - service-media
+      - lavinmq
+
+  # Microservice 4: WhatsApp Notification Worker
+  service-notification:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    command: ["npx", "tsx", "workers/notification/whatsappWorker.ts"]
+    container_name: piha-worker-whatsapp
+    restart: unless-stopped
+    environment:
+      - AMQP_URL=amqp://guest:guest@lavinmq:5672/
+      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
+      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+      - ULTRAMSG_INSTANCE_ID=${ULTRAMSG_INSTANCE_ID}
+      - ULTRAMSG_TOKEN=${ULTRAMSG_TOKEN}
+    networks:
+      - piha-net
+    depends_on:
+      - lavinmq
+
+  # Microservice 5: Calendar Booking Worker (IST Daypart Resolver)
+  service-calendar:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    command: ["npx", "tsx", "workers/calendar/calendarWorker.ts"]
+    container_name: piha-worker-calendar
+    restart: unless-stopped
+    environment:
+      - AMQP_URL=amqp://guest:guest@lavinmq:5672/
+      - GOOGLE_CALENDAR_CLIENT_ID=${GOOGLE_CALENDAR_CLIENT_ID}
+    networks:
+      - piha-net
+    depends_on:
+      - lavinmq
+
+  # Microservice 6: Post-Call Analytics & Supabase Persistence
+  service-analytics:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    command: ["npx", "tsx", "workers/analytics/postCallWorker.ts"]
+    container_name: piha-worker-analytics
+    restart: unless-stopped
+    environment:
+      - AMQP_URL=amqp://guest:guest@lavinmq:5672/
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/piha_db
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    networks:
+      - piha-net
+    depends_on:
+      - lavinmq
+      - postgres
+
+  # Message Broker: LavinMQ AMQP 0-9-1
+  lavinmq:
+    image: cloudamqp/lavinmq:latest
+    container_name: piha-lavinmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - piha-net
+
+  # In-Memory Cache: Redis 7
+  redis:
+    image: redis:7-alpine
+    container_name: piha-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - piha-net
+
+  # Primary Storage: PostgreSQL 16
+  postgres:
+    image: postgres:16-alpine
+    container_name: piha-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=piha_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - piha_pgdata:/var/lib/postgresql/data
+    networks:
+      - piha-net
+
+networks:
+  piha-net:
+    driver: bridge
+
+volumes:
+  piha_pgdata:
