@@ -20,7 +20,7 @@ export const QuickDialModal: React.FC<QuickDialModalProps> = ({
   const [result, setResult] = useState<{ success: boolean; message: string } | null>(null);
   const [agents, setAgents] = useState<AgentConfig[]>(AGENT_PRESETS);
   const [selectedAgentId, setSelectedAgentId] = useState<string>(
-    initialAgentId || 'agent-ecommerce-neha'
+    initialAgentId || 'agent-outbound-sales'
   );
 
   useEffect(() => {
@@ -48,7 +48,7 @@ export const QuickDialModal: React.FC<QuickDialModalProps> = ({
 
   const currentAgent =
     agents.find((a) => a.id === selectedAgentId) ||
-    agents.find((a) => a.id === 'agent-ecommerce-neha') ||
+    agents.find((a) => a.id === 'agent-outbound-sales') ||
     agents[0];
 
   const handleSubmit = async (e: React.FormEvent) => {

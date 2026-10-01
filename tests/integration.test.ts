@@ -14,10 +14,10 @@ async function runTests() {
 
   function assert(condition: boolean, testName: string) {
     if (condition) {
-      console.log(`✅ PASS: ${testName}`);
+      console.log(`[PASS] ${testName}`);
       passed++;
     } else {
-      console.error(`❌ FAIL: ${testName}`);
+      console.error(`[FAIL] ${testName}`);
       failed++;
     }
   }

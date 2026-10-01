@@ -1,4 +1,4 @@
-﻿"""
+"""
 Piha AI — LiveKit Real-Time Autonomous Multilingual Voice Agent
 Core Loop: Silero VAD -> Sarvam Streaming ASR -> Gemini 2.5 Flash (Groq Failover) -> Sarvam/Cartesia TTS
 Async Decoupled Side-Effects: LavinMQ AMQP Topic Exchange
@@ -22,17 +22,24 @@ logging.basicConfig(
 )
 logger = logging.getLogger("piha-agent")
 
-load_dotenv()
+# Load root .env
+root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+dotenv_path = os.path.join(root_dir, ".env")
+if os.path.exists(dotenv_path):
+    load_dotenv(dotenv_path=dotenv_path)
+else:
+    load_dotenv()
 
 # System Prompt Context
 PIHA_SYSTEM_PROMPT = """
-You are Piha AI, an autonomous, highly professional, warm, and proactive voice sales agent for modern businesses.
+You are Aarav, an autonomous outbound voice AI sales and lead outreach agent for Piha AI.
 Your goals:
-1. Greet the customer warmly and converse in their preferred language (Kannada, Hindi, Telugu, or English).
-2. Understand their requirements (custom online stores, payment integrations, WhatsApp notifications).
-3. If they request pricing or brochures, immediately offer to send details to their WhatsApp.
-4. If they want to schedule a demonstration or meeting, coordinate a convenient time slot.
-5. Keep your responses short, conversational, and direct (1-2 sentences max), optimized for voice. Never give markdown lists or bullet points.
+1. Warmly introduce yourself and state that you are calling regarding their inquiry about automated voice AI solutions for businesses.
+2. Converse naturally in their preferred language (Kannada, Hindi, Telugu, or English).
+3. Understand their customer call volume and outreach requirements (sales qualification, follow-ups, or appointment booking).
+4. If they ask for pricing or details, immediately offer to dispatch full brochures and enterprise pricing to their WhatsApp.
+5. If they want to schedule a live demonstration, coordinate a convenient time slot on Google Calendar.
+6. Keep all responses concise, conversational, and direct (1-2 sentences max), optimized for voice without markdown or bullet points.
 """
 
 class PihaEventPublisher:
@@ -123,12 +130,12 @@ class PihaVoiceTurnRouter:
             return "Your consultation call has been locked for tomorrow at 4:30 PM IST on Google Calendar."
 
         if language == "kn-IN":
-            return "ನಮಸ್ಕಾರ! ನಾವು ಪೇಮೆಂಟ್‌ ಗೇಟ್‌ವೇ ಮತ್ತು ಆರ್ಡರ್ ಟ್ರ್ಯಾಕಿಂಗ್‌ನೊಂದಿಗೆ ಕಸ್ಟಮ್ ಆನ್‌ಲೈನ್ ಸ್ಟೋರ್‌ಗಳನ್ನು ನಿರ್ಮಿಸುತ್ತೇವೆ."
+            return "ನಮಸ್ಕಾರ! ನಾವು ಬ್ಯುಸಿನೆಸ್‌ಗಳಿಗಾಗಿ 500ms ಗಿಂತ ಕಡಿಮೆ ಅವಧಿಯಲ್ಲಿ ಪ್ರತಿಕ್ರಿಯಿಸುವ ಸ್ವಯಂಚಾಲಿತ ಔಟ್‌ಬೌಂಡ್ ವಾಯ್ಸ್ ಎಐ ಪರಿಹಾರಗಳನ್ನು ನಿರ್ಮಿಸುತ್ತೇವೆ."
         elif language == "hi-IN":
-            return "नमस्ते! हम पेमेंट गेटवे और लाइव ट्रैकिंग के साथ पूरा ऑनलाइन स्टोर सेटअप करते हैं।"
+            return "नमस्ते! हम बिज़नेस के लिए रियल-टाइम ऑटोमेटेड आउटबाउंड वॉइस एआई सॉल्यूशन्स सेटअप करते हैं।"
         elif language == "te-IN":
-            return "నమస్కారం! పేమెంట్ గేట్‌వే మరియు ఆర్డర్ ట్రాకింగ్‌తో మేము పూర్తి ఆన్‌లైన్ స్టోర్‌ను నిర్మిస్తాము."
-        return "Yes! We build high-converting custom online stores with payment gateways and automated order tracking."
+            return "నమస్కారం! వ్యాపారాల కోసం మేము రియల్-టైమ్ ఆటోమేటెడ్ అవుట్‌బౌండ్ వాయిస్ AI సేవలను అందిస్తున్నాము."
+        return "We build enterprise autonomous outbound voice AI agents with natural sub-500ms voice turnaround in Indian languages."
 
 
 async def run_piha_agent():

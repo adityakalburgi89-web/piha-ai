@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Piha AI — Post-Call Analytics & Persistence Worker
  * Consumes: `queue.postcall` bound to `call.completed`
  * Runs sentiment analysis, fact extraction, and saves call records to Supabase PostgreSQL.

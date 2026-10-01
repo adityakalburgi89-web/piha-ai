@@ -20,5 +20,5 @@
 
 ---
 
-> 📘 **Full Enterprise Visual System Design:**  
+> **Full Enterprise Visual System Design:**  
 > For the complete 7-layer architecture, LavinMQ AMQP decoupling, dual-LLM circuit breaker, and sequence diagrams, refer to [DESIGN.md](file:///c:/Users/adity/OneDrive/Desktop/elavateVoice/DESIGN.md).

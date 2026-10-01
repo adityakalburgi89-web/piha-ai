@@ -200,7 +200,7 @@ export const VoiceShowcaseSection: React.FC = () => {
                       gap: '4px',
                     }}
                   >
-                    {isPlaying ? '● PLAYING' : 'AUDIO SAMPLE'}
+                    {isPlaying ? 'PLAYING' : 'AUDIO SAMPLE'}
                   </span>
                 </div>
 

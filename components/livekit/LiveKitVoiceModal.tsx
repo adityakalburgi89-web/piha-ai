@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { Room, RoomEvent, Track, RemoteTrack } from 'livekit-client';
 import {
   FiMic,
   FiMicOff,
@@ -60,6 +61,8 @@ export const LiveKitVoiceModal: React.FC<LiveKitVoiceModalProps> = ({
   const [sideEffects, setSideEffects] = useState<AsyncSideEffect[]>([]);
   const [bargeInCount, setBargeInCount] = useState(0);
 
+  const roomRef = useRef<Room | null>(null);
+  const remoteAudioRef = useRef<HTMLAudioElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const animationFrameRef = useRef<number | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -80,14 +83,77 @@ export const LiveKitVoiceModal: React.FC<LiveKitVoiceModalProps> = ({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           language: selectedLanguage,
-          agentId: 'agent-ecommerce-neha',
-          name: 'Web Customer',
+          agentId: 'agent-outbound-sales',
+          name: 'Business Lead',
         }),
       });
 
       const tokenData = await res.json();
+      if (!tokenData.success || !tokenData.token) {
+        throw new Error(tokenData.error || 'Failed to acquire LiveKit token');
+      }
 
-      // 2. Request user microphone
+      // 2. Initialize real LiveKit WebRTC Room
+      const room = new Room({
+        adaptiveStream: true,
+        dynacast: true,
+        audioCaptureDefaults: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+        },
+      });
+      roomRef.current = room;
+
+      room.on(RoomEvent.TrackSubscribed, (track: RemoteTrack) => {
+        if (track.kind === Track.Kind.Audio) {
+          const el = track.attach();
+          el.id = 'livekit-remote-audio-el';
+          document.body.appendChild(el);
+          remoteAudioRef.current = el;
+          setCallState('speaking');
+        }
+      });
+
+      room.on(RoomEvent.TrackUnsubscribed, (track: RemoteTrack) => {
+        track.detach().forEach((el) => el.remove());
+        if (callState === 'speaking') {
+          setCallState('listening');
+        }
+      });
+
+      room.on(RoomEvent.ActiveSpeakersChanged, (speakers) => {
+        const isAgentSpeaking = speakers.some((s) => s.identity !== room.localParticipant.identity);
+        if (isAgentSpeaking) {
+          setCallState('speaking');
+        } else if (callState === 'speaking') {
+          setCallState('listening');
+        }
+      });
+
+      room.on(RoomEvent.DataReceived, (payload: Uint8Array) => {
+        try {
+          const text = new TextDecoder().decode(payload);
+          const data = JSON.parse(text);
+          if (data.type === 'transcript' && data.turn) {
+            setTranscripts((prev) => [...prev, data.turn]);
+          } else if (data.type === 'side_effect' && data.effect) {
+            setSideEffects((prev) => [...prev, data.effect]);
+          }
+        } catch {
+          // ignore
+        }
+      });
+
+      room.on(RoomEvent.Disconnected, () => {
+        endCall();
+      });
+
+      const wsUrl = tokenData.wsUrl || 'wss://piha-ai-nas9iift.livekit.cloud';
+      await room.connect(wsUrl, tokenData.token);
+      await room.localParticipant.setMicrophoneEnabled(true);
+
+      // 3. Request user microphone and setup visualizer
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       micStreamRef.current = stream;
 
@@ -105,10 +171,10 @@ export const LiveKitVoiceModal: React.FC<LiveKitVoiceModalProps> = ({
 
       // Initial greetings per language
       const greetings: Record<string, string> = {
-        'kn-IN': 'ನಮಸ್ಕಾರ! ನಾನು ಪಿಹಾ ಎಐ. ನಿಮಗೆ ಯಾವ ಇ-ಕಾಮರ್ಸ್ ಪ್ರಾಡಕ್ಟ್ ಅಥವಾ ಸರ್ವಿಸ್ ಬಗ್ಗೆ ಮಾಹಿತಿ ಬೇಕು?',
-        'hi-IN': 'नमस्ते! मैं पिहा एआई हूँ। आप अपने ऑनलाइन स्टोर या बिज़नेस के लिए क्या जानकारी चाहते हैं?',
-        'te-IN': 'నమస్కారం! నేను పిహా AI. మీ ఆన్‌లైన్ వ్యాపారం లేదా సేవల గురించి నేను ఎలా సహాయపడగలను?',
-        'en-IN': 'Hello! I am Piha AI. How can I help supercharge your online store and services today?',
+        'kn-IN': 'ನಮಸ್ಕಾರ! ನಾನು ಪಿಹಾ ಎಐ ವತಿಯಿಂದ ಆರವ್ ಕರೆ ಮಾಡುತ್ತಿದ್ದೇನೆ. ನಿಮ್ಮ ಬ್ಯುಸಿನೆಸ್‌ಗಾಗಿ ನಮ್ಮ ಸ್ವಯಂಚಾಲಿತ ಔಟ್‌ಬೌಂಡ್ ವಾಯ್ಸ್ ಎಐ ಪರಿಹಾರಗಳ ಕುರಿತು ಮಾತನಾಡಲು ನಿಮ್ಮೊಂದಿಗೆ ಎರಡು ನಿಮಿಷ ಸಮಯವಿದೆಯೇ?',
+        'hi-IN': 'नमस्ते! मैं पिहा एआई से आरव बात कर रहा हूँ। आपके बिज़नेस के लिए हमारे ऑटोमेटेड आउटबाउंड वॉइस एआई सॉल्यूशन्स के बारे में बात करने के लिए क्या आपके पास दो मिनट का समय है?',
+        'te-IN': 'నమస్కారం! నేను పిహా AI నుండి ఆరవ్ మాట్లాడుతున్నాను. మీ వ్యాపారం కోసం మా ఆటోమేటెడ్ అవుట్‌బౌండ్ వాయిస్ AI సేవల గురించి మాట్లాడటానికి మీకు రెండు నిమిషాలు సమయం ఉంటుందా?',
+        'en-IN': 'Hi there! This is Aarav calling from Piha AI. I am following up regarding your interest in our autonomous outbound voice AI solutions for businesses. Do you have two quick minutes to connect?',
       };
 
       setTimeout(() => {
@@ -138,14 +204,33 @@ export const LiveKitVoiceModal: React.FC<LiveKitVoiceModalProps> = ({
     }
   };
 
+  // Toggle Microphone Mute
+  const toggleMute = async () => {
+    const nextMuted = !isMuted;
+    setIsMuted(nextMuted);
+    if (roomRef.current?.localParticipant) {
+      await roomRef.current.localParticipant.setMicrophoneEnabled(!nextMuted);
+    }
+  };
+
   // End Call & Cleanup
   const endCall = () => {
     if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
+    if (roomRef.current) {
+      roomRef.current.disconnect();
+      roomRef.current = null;
+    }
+    if (remoteAudioRef.current) {
+      remoteAudioRef.current.remove();
+      remoteAudioRef.current = null;
+    }
     if (micStreamRef.current) {
       micStreamRef.current.getTracks().forEach((track) => track.stop());
+      micStreamRef.current = null;
     }
     if (audioContextRef.current) {
       audioContextRef.current.close().catch(() => {});
+      audioContextRef.current = null;
     }
     setCallState('idle');
   };
@@ -387,7 +472,7 @@ export const LiveKitVoiceModal: React.FC<LiveKitVoiceModalProps> = ({
               ) : (
                 <>
                   <button
-                    onClick={() => setIsMuted(!isMuted)}
+                    onClick={toggleMute}
                     className={`control-btn btn-round ${isMuted ? 'btn-muted' : 'btn-neutral'}`}
                     title={isMuted ? 'Unmute Mic' : 'Mute Mic'}
                   >

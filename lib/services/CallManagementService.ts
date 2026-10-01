@@ -76,7 +76,7 @@ export class CallManagementService {
       agent = await agentRepository.findById(input.agentId);
     }
     if (!agent) {
-      agent = await agentRepository.findById('agent-ecommerce-neha');
+      agent = (await agentRepository.findById('agent-outbound-sales')) || (await agentRepository.findAll())[0];
     }
 
     const result = await this.telephonyProvider.startCall({

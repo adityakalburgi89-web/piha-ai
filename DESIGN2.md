@@ -145,7 +145,7 @@ sequenceDiagram
     VAD-->>Worker: USER_SPEECH_START (Barge-in Triggered in < 30ms)
     
     rect rgb(240, 20, 20, 0.1)
-        Note over Worker,LLM_TTS: ⚡ Instant Cancellation (< 40ms)
+        Note over Worker,LLM_TTS: Instant Cancellation (< 40ms)
         Worker->>LLM_TTS: AbortController.abort() (Kill LLM stream & TTS generator)
         Worker->>SFU: Flush Outgoing Audio Buffer (Send silence / truncate track)
         SFU->>User: AI Immediately Stops Talking!
@@ -342,6 +342,6 @@ if __name__ == "__main__":
 | **Instant Interactive Web Demo on your site** | No | **Yes (Directly in Next.js)** |
 | **Barge-in / Interruption smoothness** | Medium | **Instant & Flawless** |
 
-> 💡 **Recommendation:**  
+> **Recommendation:**  
 > Use **`DESIGN2.md` (LiveKit WebRTC)** for your web application's interactive voice demo, AI agent playground, and web dialer ($0 cost, incredible user experience).  
 > Keep **`DESIGN.md` (SIP/Telephony)** for when you want outbound cold calling or inbound customer support phone numbers over the cellular telephone network!

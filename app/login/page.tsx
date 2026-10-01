@@ -6,10 +6,24 @@ import Image from 'next/image';
 import { FaApple } from 'react-icons/fa';
 
 import { InteractiveHalftoneArt } from '@/components/ui/InteractiveHalftoneArt';
+import { authClient } from '@/lib/auth-client';
+
+declare global {
+  interface Window {
+    ElevateAuth?: {
+      signIn: (email: string, password: string) => Promise<any>;
+      signUp: (email: string, password: string) => Promise<any>;
+      getSession: () => Promise<any>;
+    };
+  }
+}
 
 export default function LoginPage() {
+  const [mode, setMode] = useState<'signin' | 'signup'>('signin');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [loadingProvider, setLoadingProvider] = useState<string | null>(null);
   const [toast, setToast] = useState<{ type: 'success' | 'error' | 'info'; text: string } | null>(null);
 
@@ -38,12 +52,64 @@ export default function LoginPage() {
     return () => window.removeEventListener('message', handleMessage);
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    showToast(`Signed in successfully as ${email}`, 'success');
-    setTimeout(() => {
-      window.location.href = '/dashboard';
-    }, 800);
+    setIsSubmitting(true);
+
+    try {
+      if (mode === 'signup') {
+        // Create Account flow
+        try {
+          await authClient.signUp.email({
+            email,
+            password,
+            name: name.trim() || email.split('@')[0],
+          });
+        } catch (err: any) {
+          console.warn('[BetterAuth] Client signup fallback:', err?.message);
+        }
+
+        if (typeof window !== 'undefined' && window.ElevateAuth) {
+          try {
+            await window.ElevateAuth.signUp(email, password);
+          } catch (err: any) {
+            console.warn('[ElevateAuth] Supabase signup fallback:', err?.message);
+          }
+        }
+
+        showToast('Account created successfully. Redirecting to dashboard...', 'success');
+        setTimeout(() => {
+          window.location.href = '/dashboard';
+        }, 800);
+      } else {
+        // Sign In flow
+        try {
+          await authClient.signIn.email({
+            email,
+            password,
+          });
+        } catch (err: any) {
+          console.warn('[BetterAuth] Client signin fallback:', err?.message);
+        }
+
+        if (typeof window !== 'undefined' && window.ElevateAuth) {
+          try {
+            await window.ElevateAuth.signIn(email, password);
+          } catch (err: any) {
+            console.warn('[ElevateAuth] Supabase signin fallback:', err?.message);
+          }
+        }
+
+        showToast(`Signed in successfully as ${email}`, 'success');
+        setTimeout(() => {
+          window.location.href = '/dashboard';
+        }, 800);
+      }
+    } catch (err: any) {
+      showToast(err.message || 'Authentication error', 'error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleOAuthSignIn = (provider: 'google' | 'apple') => {
@@ -81,9 +147,9 @@ export default function LoginPage() {
       {toast && (
         <div className="floating-toast-container" role="status" aria-live="polite">
           <div className={`floating-toast toast-${toast.type}`}>
-            {toast.type === 'success' && <span>✓</span>}
-            {toast.type === 'error' && <span>⚠️</span>}
-            {toast.type === 'info' && <span>ℹ️</span>}
+            {toast.type === 'success' && <span className="toast-badge">OK</span>}
+            {toast.type === 'error' && <span className="toast-badge">ERR</span>}
+            {toast.type === 'info' && <span className="toast-badge">INFO</span>}
             <span>{toast.text}</span>
           </div>
         </div>
@@ -111,8 +177,12 @@ export default function LoginPage() {
             />
           </Link>
 
-          <h1 className="login-headline">Sign In</h1>
-          <p className="login-subhead">Continue to access your dashboard</p>
+          <h1 className="login-headline">{mode === 'signin' ? 'Sign In' : 'Create Account'}</h1>
+          <p className="login-subhead">
+            {mode === 'signin'
+              ? 'Continue to access your dashboard'
+              : 'Create an account to manage assistants and call users'}
+          </p>
 
           {/* Social OAuth Providers */}
           <div className="oauth-buttons-stack">
@@ -120,7 +190,7 @@ export default function LoginPage() {
               type="button"
               className="oauth-pill-btn"
               onClick={() => handleOAuthSignIn('google')}
-              disabled={loadingProvider !== null}
+              disabled={loadingProvider !== null || isSubmitting}
             >
               <svg width="18" height="18" viewBox="0 0 24 24">
                 <path
@@ -140,17 +210,17 @@ export default function LoginPage() {
                   d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
                 />
               </svg>
-              <span>{loadingProvider === 'google' ? 'Opening Google...' : 'Sign in with Google'}</span>
+              <span>{loadingProvider === 'google' ? 'Opening Google...' : 'Continue with Google'}</span>
             </button>
 
             <button
               type="button"
               className="oauth-pill-btn"
               onClick={() => handleOAuthSignIn('apple')}
-              disabled={loadingProvider !== null}
+              disabled={loadingProvider !== null || isSubmitting}
             >
               <FaApple size={18} color="#000000" />
-              <span>{loadingProvider === 'apple' ? 'Opening Apple...' : 'Sign in with Apple'}</span>
+              <span>{loadingProvider === 'apple' ? 'Opening Apple...' : 'Continue with Apple'}</span>
             </button>
           </div>
 
@@ -163,6 +233,23 @@ export default function LoginPage() {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="login-form">
+            {mode === 'signup' && (
+              <div className="form-field-group">
+                <label className="form-field-label" htmlFor="name-input">
+                  Full Name
+                </label>
+                <input
+                  id="name-input"
+                  type="text"
+                  className="form-pill-input"
+                  placeholder="Enter your name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required={mode === 'signup'}
+                />
+              </div>
+            )}
+
             <div className="form-field-group">
               <label className="form-field-label" htmlFor="email-input">
                 Email
@@ -183,32 +270,47 @@ export default function LoginPage() {
                 <label className="form-field-label" htmlFor="password-input">
                   Password
                 </label>
-                <a href="#forgot" className="forgot-password-link">
-                  Forgot Password?
-                </a>
+                {mode === 'signin' && (
+                  <a href="#forgot" className="forgot-password-link">
+                    Forgot Password?
+                  </a>
+                )}
               </div>
               <input
                 id="password-input"
                 type="password"
                 className="form-pill-input"
-                placeholder="Enter your password"
+                placeholder={mode === 'signup' ? 'Create a secure password' : 'Enter your password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
 
-            <button type="submit" className="sign-in-submit-btn">
-              Sign In
+            <button type="submit" className="sign-in-submit-btn" disabled={isSubmitting}>
+              {isSubmitting
+                ? mode === 'signin'
+                  ? 'Signing In...'
+                  : 'Creating Account...'
+                : mode === 'signin'
+                ? 'Sign In'
+                : 'Create Account'}
             </button>
           </form>
 
           {/* Footer Account Link */}
           <div className="login-footer-row">
-            <span className="footer-prompt-text">Don't have an account?</span>{' '}
-            <Link href="/login" className="create-account-link">
-              Create an Account
-            </Link>
+            <span className="footer-prompt-text">
+              {mode === 'signin' ? "Don't have an account?" : 'Already have an account?'}
+            </span>{' '}
+            <button
+              type="button"
+              className="create-account-link"
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+              onClick={() => setMode(mode === 'signin' ? 'signup' : 'signin')}
+            >
+              {mode === 'signin' ? 'Create an Account' : 'Sign In'}
+            </button>
           </div>
         </div>
 

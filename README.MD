@@ -1,11 +1,11 @@
-﻿# Piha AI — Autonomous Multilingual Voice AI Agent (LiveKit Edition)
+# Piha AI — Autonomous Multilingual Voice AI Agent (LiveKit Edition)
 
 > **Target Latency:** < 500ms Full-Duplex Glass-to-Glass Voice Turnaround  
 > **Core Architecture:** Real-Time LiveKit SFU (WebRTC) + Silero VAD Barge-In (< 40ms) + Sarvam AI Indic Speech + Gemini 2.5 Flash / Groq Failover + LavinMQ Decoupled Microservice Bus
 
 ---
 
-## 🚀 Architecture Overview
+## Architecture Overview
 
 ```
 [WebRTC Mic / Browser]  <--->  [LiveKit SFU Media Server (:7880)]
@@ -29,7 +29,7 @@
 
 ---
 
-## ⚡ Core Latency Budget (< 500ms Target)
+## Core Latency Budget (< 500ms Target)
 
 | Pipeline Phase | Provider / Engine | Typical Latency | SLA Guarantee |
 | :--- | :--- | :--- | :--- |
@@ -42,7 +42,7 @@
 
 ---
 
-## 🌟 Key Features
+## Key Features
 
 1. **Full-Duplex WebRTC Audio Call**:
    - Talk directly to Piha AI in the browser with real-time waveform visualizers and sub-second responses.
@@ -57,7 +57,7 @@
 
 ---
 
-## 🛠️ Quickstart
+## Quickstart
 
 ### 1. Prerequisites
 - **Node.js** >= 20.0.0
@@ -105,7 +105,7 @@ Open [http://localhost:3000](http://localhost:3000) and click **"Test LiveKit Vo
 
 ---
 
-## 📂 Repository Structure
+## Repository Structure
 
 ```
 ├── agent/                       # Python LiveKit Voice Agent Fleet
@@ -140,7 +140,7 @@ Open [http://localhost:3000](http://localhost:3000) and click **"Test LiveKit Vo
 
 ---
 
-## 📜 License
+## License
 MIT License. Built by Aditya Kalburgi.
 <!-- build check step 196 -->
 

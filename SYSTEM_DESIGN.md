@@ -13,8 +13,8 @@ This bird's-eye view illustrates the clean separation between the **Web Control 
 ```mermaid
 flowchart LR
     subgraph Ingress["0. Ingress Channels"]
-        WEB["🌐 Web Browser\n(WebRTC Mic/Speaker)"]
-        TEL["📱 Mobile Phone\n(PSTN Cellular +91)"]
+        WEB["Web Browser\n(WebRTC Mic/Speaker)"]
+        TEL["Mobile Phone\n(PSTN Cellular +91)"]
     end
 
     subgraph ControlPlane["1. Control Plane (Next.js 15)"]
@@ -23,27 +23,27 @@ flowchart LR
     end
 
     subgraph MediaCore["2. Real-Time Media Core"]
-        SFU["⚡ LiveKit SFU Server\n(WebRTC Room Audio)"]
-        SIP["📞 LiveKit SIP Gateway\n(Twilio / Exotel Bridge)"]
+        SFU["LiveKit SFU Server\n(WebRTC Room Audio)"]
+        SIP["LiveKit SIP Gateway\n(Twilio / Exotel Bridge)"]
     end
 
     subgraph VoiceBrain["3. Voice AI Engine (Python)"]
-        AGENT["🤖 LiveKit Agent Runner\n(Silero VAD + Sarvam + Gemini)"]
+        AGENT["LiveKit Agent Runner\n(Silero VAD + Sarvam + Gemini)"]
     end
 
     subgraph EventBus["4. Asynchronous Event Bus"]
-        MQ["📨 LavinMQ AMQP Broker\n(piha.events.topic)"]
+        MQ["LavinMQ AMQP Broker\n(piha.events.topic)"]
     end
 
     subgraph Workers["5. Decoupled Worker Fleet"]
-        W_WA["💬 WhatsApp Worker"]
-        W_CAL["📅 Calendar Worker"]
-        W_POST["📊 Post-Call Analytics"]
+        W_WA["WhatsApp Worker"]
+        W_CAL["Calendar Worker"]
+        W_POST["Post-Call Analytics"]
     end
 
     subgraph Storage["6. Persistence & Observability"]
-        DB[("💾 Supabase PostgreSQL")]
-        OBS["📈 OpenTelemetry & Prometheus"]
+        DB[("Supabase PostgreSQL")]
+        OBS["OpenTelemetry & Prometheus"]
     end
 
     %% Ingress connections

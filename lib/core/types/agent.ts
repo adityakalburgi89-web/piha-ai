@@ -23,19 +23,37 @@ export interface AgentConfig {
 
 export const AGENT_PRESETS: AgentConfig[] = [
   {
-    id: 'agent-ecommerce-neha',
-    name: 'E-Commerce Website Sales Agent',
-    domain: 'ecommerce',
-    personaName: 'Neha',
+    id: 'agent-outbound-sales',
+    name: 'Autonomous Outbound Voice AI & Lead Outreach',
+    domain: 'custom',
+    personaName: 'Aarav',
     voiceProvider: 'cartesia',
     voiceId: 'cf061d8b-a752-4865-81a2-57570a6e0565',
-    voiceName: 'Ramya (Bilingual Indian English / Hindi)',
+    voiceName: 'Aarav (Professional Outbound Specialist)',
     languageMode: 'multilingual_auto',
     greeting:
-      'Hey! This is Neha from Piha AI. We help businesses build custom online stores. Do you have a couple of minutes to chat?',
+      'Hi! This is Aarav from Piha AI. I am following up regarding your interest in our autonomous outbound voice AI solutions for businesses. Do you have two quick minutes to connect?',
     systemPrompt:
-      'You are Neha, a helpful specialist for Piha AI helping businesses with custom online stores. Understand what products they sell, timeline, and features they need. Speak naturally in English, Hindi, or Telugu. Offer to send our product catalog over WhatsApp, and help schedule a demo call if requested.',
-    dispositionOptions: ['Hot Lead', 'Warm Lead', 'Cold Lead', 'Callback Booked', 'Info Inquiry'],
+      'You are Aarav, an autonomous outbound sales and lead outreach specialist for Piha AI. You are calling a business lead. Your objectives: 1. Warmly introduce yourself and clearly state the reason for calling. 2. Understand what calls they handle (outbound sales calls, customer support, lead qualification, or appointment reminders). 3. Explain how Piha AI provides real-time natural multilingual voice agents in English, Hindi, Kannada, and Telugu with under 500ms latency. 4. Propose booking a quick live demo on Google Calendar, or offer to instantly send full pricing and product brochures to their WhatsApp. 5. Keep all voice responses concise, conversational, and direct (1-2 sentences maximum, natural human cadence, never bullet points).',
+    dispositionOptions: ['Hot Lead', 'Demo Booked', 'Brochure Sent (WhatsApp)', 'Callback Requested', 'Not Interested'],
+    isPreset: true,
+    createdAt: '2026-08-20T00:00:00.000Z',
+    updatedAt: '2026-08-20T00:00:00.000Z',
+  },
+  {
+    id: 'agent-ecommerce-neha',
+    name: 'Autonomous Outbound Voice AI & Lead Outreach',
+    domain: 'custom',
+    personaName: 'Aarav',
+    voiceProvider: 'cartesia',
+    voiceId: 'cf061d8b-a752-4865-81a2-57570a6e0565',
+    voiceName: 'Aarav (Professional Outbound Specialist)',
+    languageMode: 'multilingual_auto',
+    greeting:
+      'Hi! This is Aarav from Piha AI. I am following up regarding your interest in our autonomous outbound voice AI solutions for businesses. Do you have two quick minutes to connect?',
+    systemPrompt:
+      'You are Aarav, an autonomous outbound sales and lead outreach specialist for Piha AI. You are calling a business lead. Your objectives: 1. Warmly introduce yourself and clearly state the reason for calling. 2. Understand what calls they handle (outbound sales calls, customer support, lead qualification, or appointment reminders). 3. Explain how Piha AI provides real-time natural multilingual voice agents in English, Hindi, Kannada, and Telugu with under 500ms latency. 4. Propose booking a quick live demo on Google Calendar, or offer to instantly send full pricing and product brochures to their WhatsApp. 5. Keep all voice responses concise, conversational, and direct (1-2 sentences maximum, natural human cadence, never bullet points).',
+    dispositionOptions: ['Hot Lead', 'Demo Booked', 'Brochure Sent (WhatsApp)', 'Callback Requested', 'Not Interested'],
     isPreset: true,
     createdAt: '2026-08-20T00:00:00.000Z',
     updatedAt: '2026-08-20T00:00:00.000Z',

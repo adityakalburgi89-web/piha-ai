@@ -34,9 +34,9 @@ interface HeroSectionProps {
 
 const samplePromptsByLang: Record<string, { prompt: string; response: string; audioSrc: string }> = {
   'en-IN': {
-    prompt: 'Hi! Do you help set up custom online stores with payment gateways?',
+    prompt: 'How can your outbound voice AI automate our sales outreach?',
     response:
-      'Yes, we do! We build custom online stores with payment gateways and order tracking. What kinds of products are you planning to sell?',
+      'We automate high-volume outbound lead calling, qualification, and appointment booking with natural voice turnaround in under 500 milliseconds!',
     audioSrc: '/audio/english.mp3',
   },
   'hi-IN': {

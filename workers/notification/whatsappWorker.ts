@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Piha AI — WhatsApp Notification Microservice Worker
  * Consumes: `queue.whatsapp` bound to `action.whatsapp.*`
  * Dispatches PDF catalogs, pricing sheets, and confirmations without blocking audio loop.

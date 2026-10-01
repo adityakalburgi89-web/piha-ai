@@ -1,4 +1,7 @@
-﻿import { AccessToken, VideoGrant } from 'livekit-server-sdk';
+import { AccessToken, VideoGrant } from 'livekit-server-sdk';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export interface GenerateTokenOptions {
   roomName: string;

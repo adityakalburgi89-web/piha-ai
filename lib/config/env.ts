@@ -23,6 +23,15 @@ const envSchema = z.object({
   SARVAM_API_KEY: z.string().optional().default(''),
   TTS_PROVIDER: z.string().default('sarvam'),
 
+  // LiveKit SFU (WebRTC Audio Core)
+  LIVEKIT_URL: z.string().default('ws://localhost:7880'),
+  LIVEKIT_API_KEY: z.string().default('devkey'),
+  LIVEKIT_API_SECRET: z.string().default('secretkey'),
+  NEXT_PUBLIC_LIVEKIT_URL: z.string().default('ws://localhost:7880'),
+
+  // Message Broker
+  AMQP_URL: z.string().default('amqp://guest:guest@localhost:5672/'),
+
   // LLM Providers
   PRIMARY_LLM_PROVIDER: z.enum(['gemini', 'groq']).default('gemini'),
   FALLBACK_LLM_PROVIDER: z.enum(['gemini', 'groq']).default('groq'),

@@ -12,7 +12,7 @@ export class OmniDimensionProvider implements ITelephonyProvider {
 
     const initialGreeting =
       params.greeting ||
-      'Hey! This is Neha from Piha AI. We help businesses build custom online stores. Do you have a couple of minutes to chat?';
+      'Hi! This is Aarav from Piha AI. I am following up regarding your interest in our autonomous outbound voice AI solutions for businesses. Do you have two quick minutes to connect?';
 
     if (!apiKey || apiKey === 'dummy_key' || !agentId || agentId === 'dummy_agent') {
       const mockCallId = `omn_mock_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
@@ -43,9 +43,11 @@ export class OmniDimensionProvider implements ITelephonyProvider {
           to_number: params.phoneNumber,
           phone_number: params.phoneNumber,
           first_sentence: initialGreeting,
+          prompt: params.systemPrompt,
+          system_prompt: params.systemPrompt,
           custom_variables: {
-            persona_name: params.personaName || 'Neha',
-            agent_name: params.agentName || 'Piha AI Assistant',
+            persona_name: params.personaName || 'Aarav',
+            agent_name: params.agentName || 'Piha AI Outbound Specialist',
             greeting: initialGreeting,
             system_prompt: params.systemPrompt || '',
           },

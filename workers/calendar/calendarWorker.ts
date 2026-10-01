@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Piha AI — Calendar Booking Microservice Worker
  * Consumes: `queue.calendar` bound to `action.calendar.*`
  * Resolves natural language dayparts to IST timestamps and sends invites.

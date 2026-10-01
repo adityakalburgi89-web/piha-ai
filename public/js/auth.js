@@ -1,8 +1,3 @@
-
-
-
-
-
 /**
  * ElevateVoice — Supabase Client Authentication Helper
  */

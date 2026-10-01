@@ -126,7 +126,7 @@ export default function AsciiDemoPage() {
         />
 
         <div style={{ textAlign: 'center', marginTop: '16px', fontSize: '12.5px', color: 'var(--color-ash)' }}>
-          💡 Tip: Use the top-right buttons on the canvas to toggle between <strong>Magnetic Push</strong>, <strong>Water Ripple</strong>, and <strong>Matrix Scramble</strong>!
+          Tip: Use the top-right buttons on the canvas to toggle between <strong>Magnetic Push</strong>, <strong>Water Ripple</strong>, and <strong>Matrix Scramble</strong>.
         </div>
       </main>
 
